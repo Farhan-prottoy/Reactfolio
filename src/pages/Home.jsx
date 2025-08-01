@@ -212,7 +212,7 @@ const Home = () => {
                 {/* Profile Image */}
                 <div className="absolute inset-8 bg-gradient-to-br from-primary-100 to-electric-100 dark:from-primary-900 dark:to-electric-900 rounded-full flex items-center justify-center overflow-hidden shadow-2xl">
                   <img
-                    src="public/images/Images/my-image.jpg"
+                    src="/images/Images/my-image.jpg"
                     alt="Farhan Arefin Khan"
                     className="w-full h-full object-cover rounded-full"
                     onError={(e) => {

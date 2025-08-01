@@ -58,7 +58,7 @@ const Header = () => {
               className="w-10 h-10 lg:w-12 lg:h-12  to-electric-600 rounded-full flex items-center justify-center shadow-lg"
             >
               <img
-                src="public/images/Images/suit-pora.jpg"
+                src="/images/Images/suit-pora.jpg"
                 alt="Logo"
                 className="w-full h-full object-cover rounded-full"
               />{" "}
