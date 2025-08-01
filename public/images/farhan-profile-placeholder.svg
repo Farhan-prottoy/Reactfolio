@@ -1,0 +1,51 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="profileGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#7c3aed;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+    <pattern id="profilePattern" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/>
+    </pattern>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="200" cy="200" r="200" fill="url(#profileGradient)"/>
+  <circle cx="200" cy="200" r="200" fill="url(#profilePattern)"/>
+  
+  <!-- Profile silhouette -->
+  <g transform="translate(200, 200)">
+    <!-- Head -->
+    <circle cx="0" cy="-40" r="50" fill="rgba(255,255,255,0.2)"/>
+    
+    <!-- Body -->
+    <ellipse cx="0" cy="30" rx="70" ry="90" fill="rgba(255,255,255,0.2)"/>
+    
+    <!-- Suit jacket -->
+    <path d="M -60 -10 Q -60 -5 -55 0 L -55 80 Q -55 85 -50 85 L 50 85 Q 55 85 55 80 L 55 0 Q 60 -5 60 -10 L 60 -20 Q 55 -25 45 -25 L 25 -25 Q 20 -30 15 -30 L -15 -30 Q -20 -30 -25 -25 L -45 -25 Q -55 -25 -60 -20 Z" fill="rgba(255,255,255,0.3)"/>
+    
+    <!-- Shirt -->
+    <path d="M -20 -25 L 20 -25 L 20 85 L -20 85 Z" fill="rgba(255,255,255,0.4)"/>
+    
+    <!-- Tie -->
+    <path d="M -8 -20 L 8 -20 L 10 85 L -10 85 Z" fill="rgba(255,255,255,0.2)"/>
+    
+    <!-- Collar -->
+    <path d="M -20 -25 L -10 -15 L 0 -25 L 10 -15 L 20 -25 L 20 -15 L 0 -10 L -20 -15 Z" fill="rgba(255,255,255,0.35)"/>
+  </g>
+  
+  <!-- Decorative elements -->
+  <circle cx="80" cy="80" r="3" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="320" cy="80" r="2" fill="rgba(255,255,255,0.25)"/>
+  <circle cx="350" cy="250" r="3" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="50" cy="320" r="2" fill="rgba(255,255,255,0.25)"/>
+  
+  <!-- Name placeholder -->
+  <text x="200" y="350" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="sans-serif" font-size="16" font-weight="bold">
+    Farhan Arefin Khan
+  </text>
+  <text x="200" y="370" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-family="sans-serif" font-size="12">
+    Electrical Engineer
+  </text>
+</svg>

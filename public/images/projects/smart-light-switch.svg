@@ -1,0 +1,17 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#047857;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#grad2)"/>
+  <circle cx="100" cy="80" r="30" fill="#047857"/>
+  <circle cx="300" cy="80" r="30" fill="#047857"/>
+  <rect x="50" y="120" width="300" height="100" fill="#047857" rx="12"/>
+  <rect x="70" y="140" width="80" height="60" fill="#10B981" rx="8"/>
+  <rect x="160" y="140" width="80" height="60" fill="#10B981" rx="8"/>
+  <rect x="250" y="140" width="80" height="60" fill="#10B981" rx="8"/>
+  <text x="200" y="40" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">Smart Light Switch</text>
+  <text x="200" y="270" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12">ESP32 • IoT • Sensors • Mobile App</text>
+</svg>

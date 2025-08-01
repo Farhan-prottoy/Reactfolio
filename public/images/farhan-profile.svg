@@ -1,0 +1,12 @@
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E40AF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <circle cx="150" cy="150" r="150" fill="url(#bgGrad)"/>
+  <circle cx="150" cy="120" r="45" fill="#E5E7EB"/>
+  <ellipse cx="150" cy="220" rx="75" ry="50" fill="#E5E7EB"/>
+  <text x="150" y="280" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Farhan Arefin Khan</text>
+</svg>
