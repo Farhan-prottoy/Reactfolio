@@ -248,7 +248,7 @@ const About = () => {
             >
               <div className="relative inline-block">
                 <img
-                  src="/images/cropped image.jpg"
+                  src="public/images/Images/cropped-image.jpg"
                   alt="Farhan Arefin Khan"
                   className="w-22 h-32 lg:w-30 lg:h-40 rounded-full mx-auto shadow-2xl"
                 />
