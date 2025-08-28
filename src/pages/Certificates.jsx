@@ -94,7 +94,7 @@ const Certificates = () => {
       color: 'from-orange-500 to-red-500'
     },
     {
-      id: 4,
+      id: 5,
       title: '30 Days Webiner on PLC, VFD, DMI',
       issuer: 'Gobeshona Learning Academy',
       year: '2024',
