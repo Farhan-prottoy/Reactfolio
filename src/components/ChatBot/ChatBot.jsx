@@ -2,13 +2,14 @@ import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, X, Send, Bot, User, Zap } from 'lucide-react'
 import { useTheme } from '../../context/ThemeContext'
+import { FARHAN_CONTEXT, QUICK_RESPONSES } from '../../data/farhanInfo.js'
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hi! I'm Farhan's AI assistant. I can help you learn more about his experience, projects, and skills. What would you like to know?",
+      text: "Hey there! 👋 I'm Farhan's personal assistant. I can help you learn about his work, projects, skills, and experience. I'll scan through his portfolio to give you the most relevant information. What would you like to know?",
       sender: 'bot',
       timestamp: new Date()
     }
@@ -26,113 +27,171 @@ const ChatBot = () => {
     scrollToBottom()
   }, [messages])
 
-  // Gemini API integration
-  const sendToGemini = async (message) => {
-    const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY
+  // Function to extract relevant content from the website
+  const extractWebsiteContent = (userMessage) => {
+    const messageLower = userMessage.toLowerCase();
+    const extractedContent = [];
     
-    if (!GEMINI_API_KEY) {
-      return getFallbackResponse(message)
-    }
-
-    try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            contents: [{
-              parts: [{
-                text: `You are an AI assistant for Farhan Arefin Khan's portfolio website. Here's his information:
-
-Name: Farhan Arefin Khan
-Education: Bachelor of Science in Electrical and Electronic Engineering (EEE) from Sylhet Engineering College (2020-2025), CGPA: 3.57/4.00
-Thesis: Detection and Classification of 2D Material Flakes Using Ensemble GMM and Neural Networks
-Location: Sylhet District, Bangladesh
-Email: farhan.prottoy.17@gmail.com
-Phone: 01751948747
-
-Skills:
-- Programming: Python, C, C++, MATLAB, HTML, CSS, JavaScript, React
-- Embedded Systems: Arduino, ESP32, Proteus
-- ML/DL & CV: NumPy, Pandas, Scikit-learn, TensorFlow, PyTorch, OpenCV
-- Tools: MATLAB, Simulink, AutoCAD, Git, GitHub
-
-Projects:
-- Three-Phase Inverter System using IGBT and Arduino
-- Smart Light Switch with Manual and Automatic Control
-
-Certifications:
-- Control Design Onramp with Simulink – MATLAB Academy, 2024
-- 30 Days Webinar Participation on PLC, VFD, HMI – Gobeshona Learning Academy, 2024
-- VLSI System On Chip Design – Overview – Maven Silicon, 2025
-
-Experience:
-- Cultural Secretary at EEE Association, Sylhet Engineering College (Aug 2024 – Jul 2025)
-- Industrial Technology on Electrical Engineering & Instrumentation, TICI, Narsingdi (A+ Grade)
-
-Programming Experience:
-- Codeforces: 300+ problems solved, Max rating: 1009
-- CodeChef: 150+ problems solved, Max rating: 1436
-- LeetCode, LightOJ, UVA, CSES: 50+ problems on DSA
-
-User question: ${message}
-
-Please provide a helpful, informative response about Farhan's background, skills, or experience. Keep it conversational and engaging.`
-              }]
-            }]
-          })
-        }
-      )
-
-      const data = await response.json()
-      
-      if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-        return data.candidates[0].content.parts[0].text
-      } else {
-        return getFallbackResponse(message)
+    // Get all text content from main sections
+    const contentSelectors = [
+      'main', 'section', 'article', '.content', 
+      '[id*="about"]', '[id*="project"]', '[id*="skill"]', 
+      '[id*="experience"]', '[id*="contact"]', '[id*="certificate"]',
+      '[class*="about"]', '[class*="project"]', '[class*="skill"]',
+      '[class*="experience"]', '[class*="contact"]', '[class*="certificate"]',
+      'h1', 'h2', 'h3', 'h4', 'p', 'li'
+    ];
+    
+    contentSelectors.forEach(selector => {
+      try {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => {
+          if (element && element.innerText) {
+            const text = element.innerText.trim();
+            if (text.length > 20 && text.length < 1000) { // Only meaningful content, not too long
+              // Check if content is relevant to user's message
+              const keywords = messageLower.split(' ').filter(word => word.length > 2);
+              const isRelevant = keywords.some(word => 
+                text.toLowerCase().includes(word)
+              );
+              
+              // Include headers and relevant content
+              if (isRelevant || ['H1', 'H2', 'H3', 'H4'].includes(element.tagName)) {
+                extractedContent.push({
+                  selector: selector,
+                  text: text.substring(0, 400), // Limit text length
+                  tag: element.tagName,
+                  relevanceScore: isRelevant ? keywords.filter(word => 
+                    text.toLowerCase().includes(word)
+                  ).length : 0
+                });
+              }
+            }
+          }
+        });
+      } catch (error) {
+        console.warn(`Error extracting content from ${selector}:`, error);
       }
+    });
+    
+    // Remove duplicates and sort by relevance
+    const uniqueContent = extractedContent
+      .filter((item, index, self) => 
+        index === self.findIndex(t => t.text === item.text)
+      )
+      .sort((a, b) => b.relevanceScore - a.relevanceScore) // Sort by relevance
+      .slice(0, 8); // Limit to top 8 most relevant pieces
+    
+    console.log(`🔍 Extracted ${uniqueContent.length} relevant content pieces from website`);
+    return uniqueContent;
+  };
+
+  // Enhanced Gemini API integration with website content extraction
+  const sendToGemini = async (message) => {
+    try {
+      // Validate message length
+      if (message.length > 500) {
+        return "Please keep your message under 500 characters for better response quality.";
+      }
+
+      // Extract relevant website content
+      const websiteContent = extractWebsiteContent(message);
+      
+      console.log('🔍 Extracted website content:', websiteContent);
+
+      // Use proxy path instead of absolute URL
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          message: message.trim(),
+          websiteContent: websiteContent 
+        }),
+        signal: AbortSignal.timeout(30000) // 30 second timeout
+      });
+
+      if (response.status === 429) {
+        const errorData = await response.json();
+        return `I'm getting a lot of requests right now. Please try again in a few minutes. (Rate limit: ${Math.ceil(errorData.retryAfter / 60000)} minutes)`;
+      }
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.response) {
+        return data.response;
+      } else {
+        throw new Error('Invalid response format');
+      }
+      
     } catch (error) {
-      console.error('Gemini API error:', error)
-      return getFallbackResponse(message)
+      console.error('API Error:', error);
+      
+      if (error.name === 'AbortError') {
+        return "The request took too long. Please try asking a shorter question.";
+      }
+      
+      // Return fallback response
+      return getFallbackResponse(message);
     }
   }
 
-  // Fallback responses when Gemini API is not available
+  // Enhanced fallback responses using imported data
   const getFallbackResponse = (message) => {
     const lowerMessage = message.toLowerCase()
     
+    // Check for keywords and return appropriate response from imported data
     if (lowerMessage.includes('skill') || lowerMessage.includes('technology')) {
-      return "Farhan has expertise in multiple areas including Python, C++, JavaScript, React, Arduino, ESP32, machine learning with TensorFlow and PyTorch, and tools like MATLAB and Simulink. He's also experienced in web development and embedded systems."
+      return QUICK_RESPONSES.skills;
     }
     
     if (lowerMessage.includes('education') || lowerMessage.includes('study') || lowerMessage.includes('degree')) {
-      return "Farhan is pursuing a Bachelor of Science in Electrical and Electronic Engineering (EEE) at Sylhet Engineering College (2020-2025) with a CGPA of 3.57/4.00. His thesis focuses on 'Detection and Classification of 2D Material Flakes Using Ensemble GMM and Neural Networks'."
+      return QUICK_RESPONSES.education;
     }
     
     if (lowerMessage.includes('project')) {
-      return "Farhan has worked on several interesting projects including a Three-Phase Inverter System using IGBT and Arduino, and a Smart Light Switch with Manual and Automatic Control. He's also developed his thesis project on 2D material flake detection using machine learning."
+      return QUICK_RESPONSES.projects;
     }
     
     if (lowerMessage.includes('experience') || lowerMessage.includes('work')) {
-      return "Farhan has served as Cultural Secretary of the EEE Association at Sylhet Engineering College and completed industrial training in Electrical Engineering & Instrumentation at TICI, Narsingdi with an A+ grade. He's also an active competitive programmer."
+      return QUICK_RESPONSES.experience;
     }
     
     if (lowerMessage.includes('contact') || lowerMessage.includes('email') || lowerMessage.includes('phone')) {
-      return "You can reach Farhan at farhan.prottoy.17@gmail.com or call him at 01751948747. He's based in Sylhet District, Bangladesh. You can also connect with him on LinkedIn at farhan-arefin-khan."
+      return QUICK_RESPONSES.contact;
     }
     
     if (lowerMessage.includes('programming') || lowerMessage.includes('competitive')) {
-      return "Farhan is an active competitive programmer with 300+ problems solved on Codeforces (max rating: 1009), 150+ on CodeChef (max rating: 1436), and 50+ problems on platforms like LeetCode, LightOJ, UVA, and CSES."
+      return "Farhan is an active competitive programmer with 300+ problems solved on Codeforces (max rating: 1009), 150+ on CodeChef (max rating: 1436), and 50+ problems on platforms like LeetCode, LightOJ, UVA, and CSES. He has 5+ years of coding experience across multiple languages.";
+    }
+    
+    if (lowerMessage.includes('hire') || lowerMessage.includes('recruit')) {
+      return QUICK_RESPONSES.hire;
     }
     
     return "Thanks for your question! Farhan is a passionate Electrical & Electronic Engineering student with strong skills in programming, embedded systems, and machine learning. Feel free to ask me about his education, projects, skills, or experience. You can also check out the different sections of his portfolio for detailed information!"
   }
 
+  // Enhanced message handling with better error handling and user feedback
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return
+
+    // Validate message length
+    if (inputMessage.length > 500) {
+      const errorMessage = {
+        id: messages.length + 1,
+        text: "Please keep your message under 500 characters for better response quality.",
+        sender: 'bot',
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, errorMessage])
+      return
+    }
 
     const userMessage = {
       id: messages.length + 1,
@@ -142,25 +201,60 @@ Please provide a helpful, informative response about Farhan's background, skills
     }
 
     setMessages(prev => [...prev, userMessage])
+    const currentMessage = inputMessage
     setInputMessage('')
     setIsTyping(true)
 
-    // Simulate typing delay
-    setTimeout(async () => {
-      const botResponse = await sendToGemini(inputMessage)
-      
-      const botMessage = {
-        id: messages.length + 2,
-        text: botResponse,
-        sender: 'bot',
-        timestamp: new Date()
-      }
+    // Add a "scanning website" message for better UX
+    const scanningMessage = {
+      id: messages.length + 2,
+      text: "🔍 Let me scan through Farhan's portfolio to find the most relevant information...",
+      sender: 'bot',
+      timestamp: new Date(),
+      isTemporary: true
+    };
+    
+    setMessages(prev => [...prev, scanningMessage]);
 
-      setMessages(prev => [...prev, botMessage])
+    try {
+      // Add variable delay for more natural feel
+      const delay = Math.random() * 1000 + 1500; // 1.5-2.5 seconds
+      
+      await new Promise(resolve => setTimeout(resolve, delay))
+      
+      const botResponse = await sendToGemini(currentMessage)
+      
+      // Remove the scanning message and add the actual response
+      setMessages(prev => {
+        const filtered = prev.filter(msg => !msg.isTemporary);
+        return [...filtered, {
+          id: messages.length + 3,
+          text: botResponse,
+          sender: 'bot',
+          timestamp: new Date()
+        }];
+      });
+      
+    } catch (error) {
+      console.error('Error sending message:', error)
+      
+      // Remove scanning message and show error
+      setMessages(prev => {
+        const filtered = prev.filter(msg => !msg.isTemporary);
+        return [...filtered, {
+          id: messages.length + 3,
+          text: "I apologize, but I'm having trouble processing your request right now. Please try again in a moment. You can also try asking about Farhan's skills, projects, or experience!",
+          sender: 'bot',
+          timestamp: new Date()
+        }];
+      });
+      
+    } finally {
       setIsTyping(false)
-    }, 1000)
+    }
   }
 
+  // Enhanced quick actions with imported responses
   const handleQuickAction = async (action) => {
     let message = ''
     let response = ''
@@ -168,15 +262,15 @@ Please provide a helpful, informative response about Farhan's background, skills
     switch (action) {
       case 'hire':
         message = 'Tell me about hiring Farhan'
-        response = "🚀 Ready to hire Farhan? Great choice! He's an Electrical & Electronic Engineering student with strong programming skills (Python, C++, JavaScript, React), experience in embedded systems (Arduino, ESP32), and machine learning expertise. He's completed industrial training with A+ grade and has proven project experience. Farhan is passionate, quick-learning, and ready to contribute to your team immediately!"
+        response = QUICK_RESPONSES.hire
         break
       case 'skills':
         message = 'What are Farhan\'s key skills?'
-        response = "💻 Farhan's Technical Skills:\n\n🔧 Programming: Python, C++, JavaScript, React\n⚡ Embedded Systems: Arduino, ESP32, IoT development\n🤖 Machine Learning: TensorFlow, PyTorch, Neural Networks\n🔬 Engineering Tools: MATLAB, Simulink, AutoCAD\n🌐 Web Development: HTML, CSS, React, Node.js\n🏆 Competitive Programming: 300+ problems solved\n📊 Data Analysis & Visualization\n\nHe combines theoretical knowledge with hands-on experience!"
+        response = QUICK_RESPONSES.skills
         break
       case 'projects':
         message = 'Show me Farhan\'s projects'
-        response = "🔥 Farhan's Featured Projects:\n\n1. 🔌 Three-Phase Inverter System - IGBT-based power electronics project with Arduino control\n\n2. 💡 Smart Light Switch - Automated lighting system with manual/automatic control modes\n\n3. 🧠 2D Material Flake Detection - Thesis project using Ensemble GMM and Neural Networks for advanced classification\n\n4. 🏆 Competitive Programming Solutions - 300+ algorithmic problems solved across multiple platforms\n\nEach project demonstrates his blend of hardware expertise and software innovation!"
+        response = QUICK_RESPONSES.projects
         break
       default:
         return
@@ -193,7 +287,8 @@ Please provide a helpful, informative response about Farhan's background, skills
     setMessages(prev => [...prev, userMessage])
     setIsTyping(true)
 
-    // Add bot response after delay
+    // Add bot response after natural delay
+    const delay = Math.random() * 800 + 1200; // 1.2-2 seconds
     setTimeout(() => {
       const botMessage = {
         id: messages.length + 2,
@@ -204,7 +299,7 @@ Please provide a helpful, informative response about Farhan's background, skills
 
       setMessages(prev => [...prev, botMessage])
       setIsTyping(false)
-    }, 1000)
+    }, delay)
   }
 
   const handleKeyPress = (e) => {
