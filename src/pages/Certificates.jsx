@@ -31,52 +31,118 @@ const Certificates = () => {
   const certificates = [
     {
       id: 1,
-      title: 'Control Design Onramp with Simulink',
-      issuer: 'MATLAB Academy',
-      year: '2024',
+      title: 'Python Basics',
+      issuer: 'HackerRank',
+      year: '2025',
       category: 'Technical',
       type: 'Online Course',
-      description: 'Comprehensive course covering control system design fundamentals using MATLAB Simulink. Learned advanced control algorithms, system modeling, and simulation techniques.',
-      skills: ['MATLAB', 'Simulink', 'Control Systems', 'System Modeling'],
-      image: '/images/certificates/matlab-control-cert.svg',
-      certificateUrl: '/certificates/matlab-control.pdf',
-      credentialId: 'MAT-CTL-2024-001',
+      description: 'Comprehensive course covering Python programming fundamentals, including syntax, data structures, and problem-solving techniques.',
+      skills: ['Python', 'Data Structures', 'Algorithms', 'Problem Solving'],
+      image: '/images/certificates/Python_basic.png',
+      certificateUrl: '/images/certificates/python_basics_certificate.pdf',
+      credentialId: '553D92DC354D',
       featured: true,
       icon: Settings,
       color: 'from-orange-500 to-red-500'
     },
     {
       id: 2,
-      title: '30 Days Webinar on PLC, VFD, HMI',
-      issuer: 'Gobeshona Learning Academy',
-      year: '2024',
-      category: 'Industrial',
-      type: 'Webinar Series',
-      description: 'Intensive 30-day webinar series covering Programmable Logic Controllers (PLC), Variable Frequency Drives (VFD), and Human Machine Interface (HMI) technologies.',
-      skills: ['PLC Programming', 'VFD', 'HMI Design', 'Industrial Automation'],
-      image: '/images/certificates/plc-vfd-hmi-cert.svg',
-      certificateUrl: '/certificates/plc-vfd-hmi.pdf',
-      credentialId: 'GLA-IND-2024-030',
+      title: 'Supervised Machine Learning Regression and Classification',
+      issuer: 'DeepLearning.ai',
+      year: '2025',
+      category: 'Technical',
+      type: 'Online Course',
+      description: 'Comprehensive course covering supervised machine learning techniques, including regression and classification algorithms, model evaluation, and practical applications.',
+      skills: ['Machine Learning', 'Python', 'Regression', 'Classification'],
+      image: '/images/certificates/Supervised_Learning.png',
+      certificateUrl: '/images/certificates/Supervised_Machine_Learning_Regression_and_Classification.pdf',
+      credentialId: '',
       featured: true,
-      icon: Zap,
-      color: 'from-blue-500 to-cyan-500'
+      icon: Settings,
+      color: 'from-orange-500 to-red-500'
     },
     {
       id: 3,
-      title: 'VLSI System On Chip Design – Overview',
-      issuer: 'Maven Silicon',
-      year: '2025',
-      category: 'Specialized',
-      type: 'Professional Course',
-      description: 'Advanced overview of Very Large Scale Integration (VLSI) and System on Chip (SoC) design principles, covering digital design, verification, and implementation.',
-      skills: ['VLSI Design', 'SoC Architecture', 'Digital Design', 'Verification'],
-      image: '/images/certificates/vlsi-soc-cert.svg',
-      certificateUrl: '/certificates/vlsi-soc.pdf',
-      credentialId: 'MVS-VLSI-2025-001',
+      title: 'Training Institute for Chemical Industries',
+      issuer: 'Training Institute for Chemical Industries',
+      year: '2024',
+      category: 'Industrial',
+      type: 'Offline Course',
+      description: 'Certification from the Training Institute for Chemical Industries, validating expertise in chemical industry processes and safety protocols.',
+      skills: ['Working of Industrial Machineries', 'Safety Protocols', 'Industrial Processes'],
+      image: '/images/certificates/TICI.jpeg',
+      certificateUrl: '',
+      credentialId: '',
       featured: true,
-      icon: Code,
-      color: 'from-purple-500 to-pink-500'
-    }
+      icon: Settings,
+      color: 'from-orange-500 to-red-500'
+    },
+    {
+      id: 4,
+      title: 'Single Phase Electrical Wiring and Installation',
+      issuer: 'Sylhet Engineering College',
+      year: '2024',
+      category: 'Technical',
+      type: 'Offline Course',
+      description: 'Comprehensive course covering single phase electrical wiring and installation techniques, safety protocols, and practical applications.',
+      skills: ['Electrical Wiring', 'Installation', 'Safety Protocols', 'Troubleshooting'],
+      image: '/images/certificates/Single_phase_wiring.jpeg',
+      certificateUrl: '',
+      credentialId: '',
+      featured: true,
+      icon: Settings,
+      color: 'from-orange-500 to-red-500'
+    },
+    {
+      id: 4,
+      title: '30 Days Webiner on PLC, VFD, DMI',
+      issuer: 'Gobeshona Learning Academy',
+      year: '2024',
+      category: 'Industrial',
+      type: 'Online Course',
+      description: 'Comprehensive course covering PLC, VFD, and DMI technologies, including programming, operation, and troubleshooting.',
+      skills: ['PLC Programming', 'VFD Operation', 'DMI Configuration', 'Troubleshooting'],
+      image: '/images/certificates/PLC.png',
+      certificateUrl: '/images/certificates/Gobeshona_learning(PLC).pdf',
+      credentialId: '',
+      featured: true,
+      icon: Settings,
+      color: 'from-orange-500 to-red-500'
+    },
+    {
+      id: 6,
+      title: 'VLSI System on Chip',
+      issuer: 'Maven',
+      year: '2024',
+      category: 'Specialized',
+      type: 'Online Course',
+      description: 'Comprehensive course covering control design principles and techniques using Matlab and Simulink.',
+      skills: ['Control Systems', 'Matlab', 'Simulink', 'System Modeling'],
+      image: '/images/certificates/VLSI_System_On_Chip_Design_Overview.jpg',
+      certificateUrl: '/images/certificates/VLSI_System_On_Chip_Design_-_Overview-Farhan_Arefin_Khan_553.pdf',
+      credentialId: '9921023004',
+      featured: true,
+      icon: Settings,
+      color: 'from-orange-500 to-red-500'
+    },
+    {
+      id: 7,
+      title: 'Control Design Onramp',
+      issuer: 'Matlab',
+      year: '2024',
+      category: 'Specialized',
+      type: 'Online Course',
+      description: 'Comprehensive course covering control design principles and techniques using Matlab and Simulink.',
+      skills: ['Control Systems', 'Matlab', 'Simulink', 'System Modeling'],
+      image: '/images/certificates/Control_Design_onramp_by_Matlab.png',
+      certificateUrl: '/images/certificates/Control_Design_Onramp_with_Simulink.pdf',
+      certificateUrl2: '/images/certificates/Control_Design_Onramp_with_Simulink_report.pdf',
+      credentialId: '',
+      featured: true,
+      icon: Settings,
+      color: 'from-orange-500 to-red-500'
+    },
+    
   ]
 
   const categories = [
@@ -188,7 +254,7 @@ const Certificates = () => {
                           <img
                             src={certificate.image}
                             alt={certificate.title}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            className="w-full h-full object-content transition-transform duration-500 group-hover:scale-110"
                             onError={(e) => {
                               e.target.style.display = 'none'
                               e.target.nextSibling.style.display = 'flex'
@@ -563,16 +629,44 @@ const Certificates = () => {
                 </div>
 
                 <div className="flex space-x-4">
-                  {selectedCertificate.certificateUrl && (
-                    <a
-                      href={selectedCertificate.certificateUrl}
-                      download
-                      className="flex-1 btn-primary flex items-center justify-center space-x-2"
-                    >
-                      <Download size={18} />
-                      <span>Download Certificate</span>
-                    </a>
+                  {/* Special case: certificate id 7 should offer two download options */}
+                  {selectedCertificate.id === 7 && (selectedCertificate.certificateUrl || selectedCertificate.certificateUrl2) ? (
+                    <>
+                      {selectedCertificate.certificateUrl && (
+                        <a
+                          href={encodeURI(selectedCertificate.certificateUrl)}
+                          download
+                          className="flex-1 btn-primary flex items-center justify-center space-x-2"
+                        >
+                          <Download size={18} />
+                          <span>Download Option 1</span>
+                        </a>
+                      )}
+
+                      {selectedCertificate.certificateUrl2 && (
+                        <a
+                          href={encodeURI(selectedCertificate.certificateUrl2)}
+                          download
+                          className="flex-1 btn-primary flex items-center justify-center space-x-2"
+                        >
+                          <Download size={18} />
+                          <span>Download Option 2</span>
+                        </a>
+                      )}
+                    </>
+                  ) : (
+                    selectedCertificate.certificateUrl && (
+                      <a
+                        href={encodeURI(selectedCertificate.certificateUrl)}
+                        download
+                        className="flex-1 btn-primary flex items-center justify-center space-x-2"
+                      >
+                        <Download size={18} />
+                        <span>Download Certificate</span>
+                      </a>
+                    )
                   )}
+
                   <button
                     onClick={() => setSelectedCertificate(null)}
                     className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
