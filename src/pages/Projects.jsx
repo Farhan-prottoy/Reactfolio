@@ -25,8 +25,8 @@ const Projects = () => {
       description: 'A comprehensive three-phase inverter system using IGBT and Arduino for power conversion applications. Features advanced control algorithms and protection mechanisms for efficient AC power generation.',
       category: 'embedded',
       technologies: ['Arduino', 'IGBT', 'Power Electronics', 'C++', 'PWM Control'],
-      image: '/images/projects/three-phase-inverter.svg',
-      github: 'https://github.com/farhan-arefin-khan/three-phase-inverter',
+      image: '/images/projects/three-phase-inverter.jpeg',
+      github: 'https://github.com/Farhan-prottoy/3-phase-vfd/tree/main',
       demo: null,
       featured: true,
       year: '2024',
@@ -49,15 +49,15 @@ const Projects = () => {
     },
     {
       id: 3,
-      title: '2D Material Flake Detection',
-      description: 'Advanced computer vision system for detection and classification of 2D material flakes using Ensemble GMM and Neural Networks. Part of my undergraduate thesis research with high accuracy results.',
+      title: 'Undergrad Thesis work',
+      description: 'Advanced computer vision system for detection and classification of 2D material flakes using Ensemble GMM and reducing false positives from the detected flakes of 2d materials using Multi-Layer Perceptron. Part of my undergraduate thesis research with high accuracy results.',
       category: 'ml',
       technologies: ['Python', 'TensorFlow', 'OpenCV', 'GMM', 'Neural Networks', 'Image Processing'],
       image: '/images/projects/2d-material-detection.svg',
-      github: 'https://github.com/farhan-arefin-khan/2d-material-detection',
+      github: '',
       demo: null,
       featured: true,
-      year: '2024-2025',
+      year: '2023-2025',
       status: 'in-progress',
       details: 'Research project focusing on automated detection and classification of 2D materials like graphene flakes using machine learning techniques. Combines traditional computer vision with modern deep learning approaches.'
     },
@@ -68,68 +68,12 @@ const Projects = () => {
       category: 'web',
       technologies: ['React', 'Tailwind CSS', 'Framer Motion', 'Vite', 'JavaScript', 'Responsive Design'],
       image: '/images/projects/portfolio-website.svg',
-      github: 'https://github.com/farhan-arefin-khan/portfolio',
-      demo: 'https://farhan-arefin-khan.com',
+      github: 'https://github.com/Farhan-prottoy/Reactfolio',
+      demo: 'https://reactfolio-two-omega.vercel.app/',
       featured: true,
       year: '2025',
       status: 'completed',
       details: 'A comprehensive portfolio website showcasing projects, skills, and achievements. Built with modern web technologies and optimized for performance and accessibility.'
-    },
-    {
-      id: 5,
-      title: 'Arduino Weather Station',
-      description: 'IoT-based weather monitoring system using Arduino and various sensors. Collects temperature, humidity, atmospheric pressure data and displays real-time information on a web dashboard.',
-      category: 'embedded',
-      technologies: ['Arduino', 'DHT22', 'BMP280', 'WiFi', 'Web Dashboard', 'Real-time Data'],
-      image: '/images/projects/weather-station.svg',
-      github: 'https://github.com/farhan-arefin-khan/weather-station',
-      demo: null,
-      featured: false,
-      year: '2023',
-      status: 'completed',
-      details: 'Comprehensive weather monitoring system that tracks environmental parameters and provides real-time data visualization through a web interface.'
-    },
-    {
-      id: 6,
-      title: 'Image Classification CNN',
-      description: 'Convolutional Neural Network for image classification tasks. Implemented various CNN architectures and achieved high accuracy on custom datasets with data augmentation techniques.',
-      category: 'ml',
-      technologies: ['Python', 'TensorFlow', 'Keras', 'CNN', 'Data Augmentation', 'Transfer Learning'],
-      image: '/images/projects/cnn-classification.svg',
-      github: 'https://github.com/farhan-arefin-khan/image-classification',
-      demo: null,
-      featured: false,
-      year: '2024',
-      status: 'completed',
-      details: 'Deep learning project implementing various CNN architectures for image classification. Explored different optimization techniques and achieved competitive results on benchmark datasets.'
-    },
-    {
-      id: 7,
-      title: 'PLC-Based Automation System',
-      description: 'Industrial automation system using Programmable Logic Controllers (PLC) for manufacturing process control. Includes HMI interface and SCADA integration for monitoring.',
-      category: 'embedded',
-      technologies: ['PLC', 'HMI', 'SCADA', 'Ladder Logic', 'Industrial Automation'],
-      image: '/images/projects/three-phase-inverter.svg', // Reusing image as placeholder
-      github: 'https://github.com/farhan-arefin-khan/plc-automation',
-      demo: null,
-      featured: false,
-      year: '2024',
-      status: 'completed',
-      details: 'Developed an industrial automation solution for manufacturing process control using PLC programming and HMI design principles.'
-    },
-    {
-      id: 8,
-      title: 'MATLAB Control System Design',
-      description: 'Advanced control system design and simulation using MATLAB and Simulink. Implemented various control strategies including PID, LQR, and Model Predictive Control.',
-      category: 'ml',
-      technologies: ['MATLAB', 'Simulink', 'Control Systems', 'PID', 'LQR', 'MPC'],
-      image: '/images/projects/2d-material-detection.svg', // Reusing image as placeholder
-      github: 'https://github.com/farhan-arefin-khan/control-systems',
-      demo: null,
-      featured: false,
-      year: '2024',
-      status: 'completed',
-      details: 'Comprehensive study and implementation of modern control techniques using MATLAB/Simulink environment for various engineering applications.'
     }
   ]
 
@@ -209,11 +153,7 @@ const Projects = () => {
                         e.target.nextSibling.style.display = 'flex'
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary-600/80 to-electric-600/80 flex items-center justify-center">
-                      <div className="text-white text-4xl font-bold">
-                        {project.title.split(' ').map(word => word[0]).join('').slice(0, 2)}
-                      </div>
-                    </div>
+                    
                     
                     {/* Status Badge */}
                     <div className="absolute top-4 right-4">
@@ -358,13 +298,6 @@ const Projects = () => {
                         e.target.nextSibling.style.display = 'flex'
                       }}
                     />
-                    
-                    {/* Overlay with project initials fallback */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary-600/70 to-electric-600/70 flex items-center justify-center">
-                      <div className="text-white text-2xl font-bold">
-                        {project.title.split(' ').map(word => word[0]).join('').slice(0, 2)}
-                      </div>
-                    </div>
 
                     {/* Hover overlay with preview button */}
                     <motion.div
