@@ -11,29 +11,32 @@ export const useTheme = () => {
 }
 
 export const ThemeProvider = ({ children }) => {
-  const [isDark, setIsDark] = useState(false)
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) {
-      setIsDark(savedTheme === 'dark')
-    } else {
-      setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches)
+  const [isDark, setIsDark] = useState(() => {
+    // Check localStorage first
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme')
+      if (savedTheme) {
+        return savedTheme === 'dark'
+      }
+      // Fallback to system preference
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
     }
-  }, [])
+    return false // Default to light if SSR (though this is SPA)
+  })
 
   useEffect(() => {
+    const root = document.documentElement
     if (isDark) {
-      document.documentElement.classList.add('dark')
+      root.classList.add('dark')
       localStorage.setItem('theme', 'dark')
     } else {
-      document.documentElement.classList.remove('dark')
+      root.classList.remove('dark')
       localStorage.setItem('theme', 'light')
     }
   }, [isDark])
 
   const toggleTheme = () => {
-    setIsDark(!isDark)
+    setIsDark(prev => !prev)
   }
 
   return (

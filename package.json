@@ -13,8 +13,8 @@
     "server:start": "cd server && npm start",
     "full:dev": "concurrently \"npm run dev\" \"npm run server:dev\"",
     "full:install": "npm install && npm run server:install",
-    "start": "npm run build && cd server && node chatAPI.js",
-    "prod": "npm run build && cd server && node chatAPI.js"
+    "start": "npm run build && cd server/src && node app.js",
+    "prod": "npm run build && cd server/src && node app.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

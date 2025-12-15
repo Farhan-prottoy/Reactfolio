@@ -2,20 +2,16 @@ import React, { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+
+// Sub-components
+import CertificateCard from '../components/CertificateCard'
+import CertificateModal from '../components/CertificateModal'
 import DecryptedText from '../components/DecryptedText'
-import { 
-  Award, 
-  Calendar, 
-  ExternalLink, 
-  Download,
-  ChevronLeft,
-  ChevronRight,
-  Zap,
-  Code,
-  Settings,
-  BookOpen,
-  X
-} from 'lucide-react'
+import * as LucideIcons from 'lucide-react'
+
+// Data
+import { certificates } from '../data/certificatesData'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -27,123 +23,6 @@ const Certificates = () => {
   const [selectedCertificate, setSelectedCertificate] = useState(null)
   const [hoveredCertificate, setHoveredCertificate] = useState(null)
   const swiperRef = useRef(null)
-
-  const certificates = [
-    {
-      id: 1,
-      title: 'Python Basics',
-      issuer: 'HackerRank',
-      year: '2025',
-      category: 'Technical',
-      type: 'Online Course',
-      description: 'Comprehensive course covering Python programming fundamentals, including syntax, data structures, and problem-solving techniques.',
-      skills: ['Python', 'Data Structures', 'Algorithms', 'Problem Solving'],
-      image: '/images/certificates/Python_basic.png',
-      certificateUrl: '/images/certificates/python_basics_certificate.pdf',
-      credentialId: '553D92DC354D',
-      featured: true,
-      icon: Settings,
-      color: 'from-orange-500 to-red-500'
-    },
-    {
-      id: 2,
-      title: 'Supervised Machine Learning Regression and Classification',
-      issuer: 'DeepLearning.ai',
-      year: '2025',
-      category: 'Technical',
-      type: 'Online Course',
-      description: 'Comprehensive course covering supervised machine learning techniques, including regression and classification algorithms, model evaluation, and practical applications.',
-      skills: ['Machine Learning', 'Python', 'Regression', 'Classification'],
-      image: '/images/certificates/Supervised_Learning.png',
-      certificateUrl: '/images/certificates/Supervised_Machine_Learning_Regression_and_Classification.pdf',
-      credentialId: '',
-      featured: true,
-      icon: Settings,
-      color: 'from-orange-500 to-red-500'
-    },
-    {
-      id: 3,
-      title: 'Training Institute for Chemical Industries',
-      issuer: 'Training Institute for Chemical Industries',
-      year: '2024',
-      category: 'Industrial',
-      type: 'Offline Course',
-      description: 'Certification from the Training Institute for Chemical Industries, validating expertise in chemical industry processes and safety protocols.',
-      skills: ['Working of Industrial Machineries', 'Safety Protocols', 'Industrial Processes'],
-      image: '/images/certificates/TICI.jpeg',
-      certificateUrl: '',
-      credentialId: '',
-      featured: true,
-      icon: Settings,
-      color: 'from-orange-500 to-red-500'
-    },
-    {
-      id: 4,
-      title: 'Single Phase Electrical Wiring and Installation',
-      issuer: 'Sylhet Engineering College',
-      year: '2024',
-      category: 'Technical',
-      type: 'Offline Course',
-      description: 'Comprehensive course covering single phase electrical wiring and installation techniques, safety protocols, and practical applications.',
-      skills: ['Electrical Wiring', 'Installation', 'Safety Protocols', 'Troubleshooting'],
-      image: '/images/certificates/Single_phase_wiring.jpeg',
-      certificateUrl: '',
-      credentialId: '',
-      featured: true,
-      icon: Settings,
-      color: 'from-orange-500 to-red-500'
-    },
-    {
-      id: 5,
-      title: '30 Days Webiner on PLC, VFD, DMI',
-      issuer: 'Gobeshona Learning Academy',
-      year: '2024',
-      category: 'Industrial',
-      type: 'Online Course',
-      description: 'Comprehensive course covering PLC, VFD, and DMI technologies, including programming, operation, and troubleshooting.',
-      skills: ['PLC Programming', 'VFD Operation', 'DMI Configuration', 'Troubleshooting'],
-      image: '/images/certificates/PLC.png',
-      certificateUrl: '/images/certificates/Gobeshona_learning(PLC).pdf',
-      credentialId: '',
-      featured: true,
-      icon: Settings,
-      color: 'from-orange-500 to-red-500'
-    },
-    {
-      id: 6,
-      title: 'VLSI System on Chip',
-      issuer: 'Maven',
-      year: '2024',
-      category: 'Specialized',
-      type: 'Online Course',
-      description: 'Comprehensive course covering control design principles and techniques using Matlab and Simulink.',
-      skills: ['Control Systems', 'Matlab', 'Simulink', 'System Modeling'],
-      image: '/images/certificates/VLSI_System_On_Chip_Design_Overview.jpg',
-      certificateUrl: '/images/certificates/VLSI_System_On_Chip_Design_-_Overview-Farhan_Arefin_Khan_553.pdf',
-      credentialId: '9921023004',
-      featured: true,
-      icon: Settings,
-      color: 'from-orange-500 to-red-500'
-    },
-    {
-      id: 7,
-      title: 'Control Design Onramp',
-      issuer: 'Matlab',
-      year: '2024',
-      category: 'Specialized',
-      type: 'Online Course',
-      description: 'Comprehensive course covering control design principles and techniques using Matlab and Simulink.',
-      skills: ['Control Systems', 'Matlab', 'Simulink', 'System Modeling'],
-      image: '/images/certificates/Control_Design_onramp_by_Matlab.png',
-      certificateUrl: '/images/certificates/Control_Design_Onramp_with_Simulink.pdf',
-      certificateUrl2: '/images/certificates/Control_Design_Onramp_with_Simulink_report.pdf',
-      credentialId: '',
-      featured: true,
-      icon: Settings,
-      color: 'from-orange-500 to-red-500'
-    },
-    
-  ]
 
   const categories = [
     { id: 'all', name: 'All Certificates', count: certificates.length },
@@ -235,7 +114,7 @@ const Certificates = () => {
                 className="certificate-swiper pb-12"
               >
                 {featuredCertificates.map((certificate) => {
-                  const Icon = certificate.icon
+                  const Icon = LucideIcons[certificate.iconName] || LucideIcons.Award
                   return (
                     <SwiperSlide key={certificate.id}>
                       <motion.div
@@ -394,289 +273,24 @@ const Certificates = () => {
 
           {/* Certificates Grid */}
           <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredCertificates.map((certificate, index) => {
-              const Icon = certificate.icon
-              return (
-                <motion.div
-                  key={certificate.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9, rotateY: -10 }}
-                  animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, rotateY: 10 }}
-                  transition={{ 
-                    duration: 0.6, 
-                    delay: index * 0.1,
-                    type: "spring",
-                    stiffness: 100
-                  }}
-                  whileHover={{ 
-                    y: -8,
-                    rotateX: 5,
-                    rotateY: 5,
-                    scale: 1.02,
-                    boxShadow: "0 20px 40px -12px rgba(0, 0, 0, 0.3)"
-                  }}
-                  className="group bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer"
-                  onClick={() => setSelectedCertificate(certificate)}
-                >
-                  {/* Certificate Preview */}
-                  <div className={`relative h-48 bg-gradient-to-br ${certificate.color} overflow-hidden`}>
-                    <img
-                      src={certificate.image}
-                      alt={certificate.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      onError={(e) => {
-                        e.target.style.display = 'none'
-                        e.target.nextSibling.style.display = 'flex'
-                      }}
-                    />
-                    
-                    {/* Fallback gradient */}
-                    <div 
-                      className="absolute inset-0 flex items-center justify-center text-white"
-                      style={{ display: 'none' }}
-                    >
-                      <div className="text-center">
-                        <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                          <Icon size={24} />
-                        </div>
-                        <div className="text-sm font-semibold">{certificate.year}</div>
-                      </div>
-                    </div>
-
-                    {/* Certificate-style decorative border */}
-                    <div className="absolute inset-2 border border-white/20 rounded-lg pointer-events-none"></div>
-                    <div className="absolute inset-4 border border-white/10 rounded-md pointer-events-none"></div>
-                    
-                    {/* Corner decorations */}
-                    <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-white/30"></div>
-                    <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-white/30"></div>
-                    <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-white/30"></div>
-                    <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-white/30"></div>
-                    
-                    {/* Year badge */}
-                    <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1 border border-white/20">
-                      <span className="text-white text-sm font-semibold">
-                        {certificate.year}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Certificate Content */}
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-xs font-medium">
-                        {certificate.category}
-                      </span>
-                      <Award className="text-electric-500" size={20} />
-                    </div>
-                    
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                      {certificate.title}
-                    </h3>
-                    
-                    <p className="text-primary-600 dark:text-primary-400 font-medium text-sm mb-3">
-                      {certificate.issuer}
-                    </p>
-                    
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed">
-                      {certificate.description.slice(0, 100)}...
-                    </p>
-                    
-                    {/* Skills */}
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {certificate.skills.slice(0, 2).map((skill) => (
-                        <span
-                          key={skill}
-                          className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-xs hover:scale-110 transition-transform"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                      {certificate.skills.length > 2 && (
-                        <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-xs">
-                          +{certificate.skills.length - 2}
-                        </span>
-                      )}
-                    </div>
-                    
-                    <button className="w-full py-2 bg-gradient-to-r from-primary-600 to-electric-600 text-white rounded-lg font-medium text-sm flex items-center justify-center space-x-1 hover:scale-105 transition-transform">
-                      <BookOpen size={14} />
-                      <span>View Certificate</span>
-                    </button>
-                  </div>
-                </motion.div>
-              )
-            })}
+            {filteredCertificates.map((certificate, index) => (
+              <CertificateCard 
+                key={certificate.id} 
+                certificate={certificate} 
+                index={index}
+                onClick={setSelectedCertificate}
+              />
+            ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Certificate Detail Modal */}
       <AnimatePresence>
         {selectedCertificate && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
-            onClick={() => setSelectedCertificate(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 30 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 30 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Close button */}
-              <button
-                onClick={() => setSelectedCertificate(null)}
-                className="absolute top-4 right-4 z-10 w-8 h-8 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors"
-              >
-                <X size={16} />
-              </button>
-
-              {/* Certificate Image Display */}
-              <div className="relative h-64 md:h-80 bg-gray-100 dark:bg-gray-700 rounded-t-2xl overflow-hidden">
-                <img
-                  src={selectedCertificate.image}
-                  alt={`${selectedCertificate.title} Certificate`}
-                  className="w-full h-full object-contain bg-white"
-                  onError={(e) => {
-                    e.target.style.display = 'none'
-                    e.target.nextSibling.style.display = 'flex'
-                  }}
-                />
-                
-                {/* Certificate placeholder when image fails */}
-                <div 
-                  className={`absolute inset-0 bg-gradient-to-br ${selectedCertificate.color} flex items-center justify-center text-white`}
-                  style={{ display: 'none' }}
-                >
-                  <div className="text-center p-8">
-                    <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <selectedCertificate.icon size={40} />
-                    </div>
-                    <h2 className="text-2xl font-bold mb-2">{selectedCertificate.title}</h2>
-                    <p className="text-lg opacity-90 mb-2">{selectedCertificate.issuer}</p>
-                    <p className="text-sm opacity-70">Certificate Image Placeholder</p>
-                    
-                    {/* Decorative certificate-style border */}
-                    <div className="absolute inset-4 border-2 border-white/30 rounded-lg pointer-events-none"></div>
-                    <div className="absolute inset-8 border border-white/20 rounded-md pointer-events-none"></div>
-                  </div>
-                </div>
-                
-                {/* Watermark */}
-                <div className="absolute bottom-4 right-4 text-white/70 text-xs">
-                  Certificate Preview
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-8">
-                <div className="flex items-start justify-between mb-6">
-                  <div>
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                      {selectedCertificate.title}
-                    </h2>
-                    <p className="text-xl text-primary-600 dark:text-primary-400 font-semibold">
-                      {selectedCertificate.issuer}
-                    </p>
-                  </div>
-                  <span className="px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium">
-                    {selectedCertificate.category}
-                  </span>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-8 mb-8">
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Year:</span>
-                      <span className="text-gray-900 dark:text-white">{selectedCertificate.year}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Type:</span>
-                      <span className="text-gray-900 dark:text-white">{selectedCertificate.type}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Credential ID:</span>
-                      <span className="text-gray-900 dark:text-white font-mono text-xs">{selectedCertificate.credentialId}</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Skills Acquired</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedCertificate.skills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mb-6">
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Description</h3>
-                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                    {selectedCertificate.description}
-                  </p>
-                </div>
-
-                <div className="flex space-x-4">
-                  {/* Special case: certificate id 7 should offer two download options */}
-                  {selectedCertificate.id === 7 && (selectedCertificate.certificateUrl || selectedCertificate.certificateUrl2) ? (
-                    <>
-                      {selectedCertificate.certificateUrl && (
-                        <a
-                          href={encodeURI(selectedCertificate.certificateUrl)}
-                          download
-                          className="flex-1 btn-primary flex items-center justify-center space-x-2"
-                        >
-                          <Download size={18} />
-                          <span>Download Option 1</span>
-                        </a>
-                      )}
-
-                      {selectedCertificate.certificateUrl2 && (
-                        <a
-                          href={encodeURI(selectedCertificate.certificateUrl2)}
-                          download
-                          className="flex-1 btn-primary flex items-center justify-center space-x-2"
-                        >
-                          <Download size={18} />
-                          <span>Download Option 2</span>
-                        </a>
-                      )}
-                    </>
-                  ) : (
-                    selectedCertificate.certificateUrl && (
-                      <a
-                        href={encodeURI(selectedCertificate.certificateUrl)}
-                        download
-                        className="flex-1 btn-primary flex items-center justify-center space-x-2"
-                      >
-                        <Download size={18} />
-                        <span>Download Certificate</span>
-                      </a>
-                    )
-                  )}
-
-                  <button
-                    onClick={() => setSelectedCertificate(null)}
-                    className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
+          <CertificateModal 
+            certificate={selectedCertificate} 
+            onClose={() => setSelectedCertificate(null)}
+          />
         )}
       </AnimatePresence>
     </motion.div>
