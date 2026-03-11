@@ -20,8 +20,8 @@ const CERTIFICATES_CONTEXT = certificates
   .map(
     (c) =>
       `- ${c.title} (${c.year}): Issued by ${c.issuer}. Skills: ${c.skills.join(
-        ", "
-      )}.`
+        ", ",
+      )}.`,
   )
   .join("\n");
 
@@ -70,8 +70,8 @@ export const chatController = {
       console.log(
         `[AUDIT-${runId}] 📩 Message received: "${message?.substring(
           0,
-          20
-        )}..."`
+          20,
+        )}..."`,
       );
 
       if (!message) return res.status(400).json({ error: "Message required" });
@@ -81,6 +81,7 @@ export const chatController = {
       // Extended model list to find a working one.
       // Removed 'models/' prefix as SDK usually handles it.
       const models = [
+        "gemini-3.1-flash-lite-preview",
         "gemini-2.5-flash",
         "gemini-1.5-flash",
         "gemini-1.5-pro",
@@ -118,7 +119,7 @@ export const chatController = {
           console.error(
             `[AUDIT-${runId}] ⚠️ Failed ${modelName}: [${
               e.status || "Unknown"
-            }] ${e.message}`
+            }] ${e.message}`,
           );
         }
       }
@@ -132,7 +133,7 @@ export const chatController = {
       } else {
         // If all specific models fail, throw default error
         throw new Error(
-          "All Gemini models failed. Please check API Key permissions or Region availability."
+          "All Gemini models failed. Please check API Key permissions or Region availability.",
         );
       }
     } catch (error) {
