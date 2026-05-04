@@ -1,39 +1,39 @@
-import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Components
-import Header from './components/Header'
-import Footer from './components/Footer'
-import ScrollToTop from './components/ScrollToTop'
-import ScrollToTopWrapper from './components/ScrollToTopWrapper'
-import ChatBot from './components/ChatBot/ChatBot'
-import BackgroundSlideshow from './components/BackgroundSlideshow'
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
+import ScrollToTopWrapper from "./components/ScrollToTopWrapper";
+import ChatBot from "./components/ChatBot/ChatBot";
+import BackgroundSlideshow from "./components/BackgroundSlideshow";
 
 // Pages
-import Home from './pages/Home'
-import About from './pages/About'
-import Projects from './pages/Projects'
-import Contact from './pages/Contact'
-import Certificates from './pages/Certificates'
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Projects from "./pages/Projects";
+import Contact from "./pages/Contact";
+import Certificates from "./pages/Certificates";
 
 // Context
-import { ThemeProvider } from './context/ThemeContext'
+import { ThemeProvider } from "./context/ThemeContext";
 
 // Hooks
-import useScrollToTop from './hooks/useScrollToTop'
+import useScrollToTop from "./hooks/useScrollToTop";
 
 function App() {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Simulate loading time
     const timer = setTimeout(() => {
-      setLoading(false)
-    }, 2000)
+      setLoading(false);
+    }, 2000);
 
-    return () => clearTimeout(timer)
-  }, [])
+    return () => clearTimeout(timer);
+  }, []);
 
   if (loading) {
     return (
@@ -74,7 +74,7 @@ function App() {
           </motion.p>
         </motion.div>
       </div>
-    )
+    );
   }
 
   return (
@@ -82,14 +82,25 @@ function App() {
       <Router>
         <div className="min-h-screen bg-white dark:bg-gray-900 relative overflow-x-hidden">
           <BackgroundSlideshow />
-          
+
           <div className="relative z-10">
             <Header />
-            
+
             <ScrollToTopWrapper>
               <AnimatePresence mode="wait">
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route
+                    path="/"
+                    element={
+                      <>
+                        <Home />
+                        <About />
+                        <Projects />
+                        <Certificates />
+                        <Contact />
+                      </>
+                    }
+                  />
                   <Route path="/about" element={<About />} />
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/certificates" element={<Certificates />} />
@@ -97,16 +108,16 @@ function App() {
                 </Routes>
               </AnimatePresence>
             </ScrollToTopWrapper>
-            
+
             <Footer />
           </div>
-          
+
           <ScrollToTop />
           <ChatBot />
         </div>
       </Router>
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;
