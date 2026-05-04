@@ -1,48 +1,48 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { 
-  Github, 
-  Linkedin, 
-  Mail, 
-  Phone, 
-  MapPin, 
+import React from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import {
+  Github,
+  Linkedin,
+  Mail,
+  Phone,
+  MapPin,
   Heart,
   Code,
   Zap,
-  Coffee
-} from 'lucide-react'
+  Coffee,
+} from "lucide-react";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   const socialLinks = [
     {
-      name: 'GitHub',
+      name: "GitHub",
       icon: Github,
-      url: 'https://github.com/farhan-arefin-khan',
-      color: 'hover:text-gray-900 dark:hover:text-white'
+      url: "https://github.com/Farhan-prottoy/",
+      color: "hover:text-gray-900 dark:hover:text-white",
     },
     {
-      name: 'LinkedIn',
+      name: "LinkedIn",
       icon: Linkedin,
-      url: 'https://linkedin.com/in/farhan-arefin-khan',
-      color: 'hover:text-blue-600'
+      url: "https://linkedin.com/in/farhan-arefin-khan",
+      color: "hover:text-blue-600",
     },
     {
-      name: 'Email',
+      name: "Email",
       icon: Mail,
-      url: 'mailto:farhan.prottoy.17@gmail.com',
-      color: 'hover:text-red-500'
-    }
-  ]
+      url: "mailto:farhan.prottoy.17@gmail.com",
+      color: "hover:text-red-500",
+    },
+  ];
 
   const quickLinks = [
-    { name: 'About', path: '/about' },
-    { name: 'Projects', path: '/projects' },
-    { name: 'Certificates', path: '/certificates' },
-    { name: 'Contact', path: '/contact' }
-  ]
+    { name: "About", path: "/about" },
+    { name: "Projects", path: "/projects" },
+    { name: "Certificates", path: "/certificates" },
+    { name: "Contact", path: "/contact" },
+  ];
 
   return (
     <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
@@ -60,10 +60,11 @@ const Footer = () => {
                 Farhan Arefin Khan
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Electrical & Electronic Engineering graduate passionate about embedded systems, 
-                web development, and machine learning. Always eager to learn and create innovative solutions.
+                Electrical & Electronic Engineering graduate passionate about
+                embedded systems, web development, and machine learning. Always
+                eager to learn and create innovative solutions.
               </p>
-              
+
               <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                 <div className="flex items-center space-x-2">
                   <MapPin size={16} />
@@ -88,7 +89,7 @@ const Footer = () => {
               className="flex space-x-4"
             >
               {socialLinks.map((social) => {
-                const Icon = social.icon
+                const Icon = social.icon;
                 return (
                   <motion.a
                     key={social.name}
@@ -101,7 +102,7 @@ const Footer = () => {
                   >
                     <Icon size={20} />
                   </motion.a>
-                )
+                );
               })}
             </motion.div>
           </div>
@@ -179,7 +180,7 @@ const Footer = () => {
         </motion.div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

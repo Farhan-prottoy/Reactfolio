@@ -90,22 +90,27 @@ CONTACT INFORMATION:
 - Phone: +8801751948747
 - Location: Sylhet, Bangladesh
 - LinkedIn: linkedin.com/in/farhan-arefin-khan
-- GitHub: github.com/farhan-arefin-khan
+- GitHub: github.com/Farhan-prottoy
 - Portfolio: Available on request
 
 Answer questions about Farhan in a friendly, informative way. Keep responses conversational and engaging. If asked about something not in this context, politely redirect to what you know about Farhan and suggest exploring different sections of his portfolio.
 `;
 
 export const QUICK_RESPONSES = {
-  skills: "💻 Farhan's Technical Skills:\n\n🔧 Programming: Python, C++, JavaScript, React\n⚡ Embedded Systems: Arduino, ESP32, IoT development\n🤖 Machine Learning: TensorFlow, PyTorch, Neural Networks\n🔬 Engineering Tools: MATLAB, Simulink, AutoCAD\n🌐 Web Development: HTML, CSS, React, Node.js\n🏆 Competitive Programming: 300+ problems solved\n📊 Data Analysis & Visualization\n\nHe combines theoretical knowledge with hands-on experience!",
-  
-  education: "🎓 Farhan is pursuing a Bachelor of Science in Electrical and Electronic Engineering (EEE) at Sylhet Engineering College (2020-2025) with a CGPA of 3.57/4.00. His thesis focuses on 'Detection and Classification of 2D Material Flakes Using Ensemble GMM and Neural Networks'. He has completed relevant coursework in microprocessors, digital signal processing, control systems, and power electronics.",
-  
-  projects: "🔥 Farhan's Featured Projects:\n\n1. 🔌 Three-Phase Inverter System - IGBT-based power electronics project with Arduino control\n\n2. 💡 Smart Light Switch - Automated lighting system with manual/automatic control modes\n\n3. 🧠 2D Material Flake Detection - Thesis project using Ensemble GMM and Neural Networks for advanced classification\n\n4. 🌦️ Weather Station - IoT-based environmental monitoring system\n\n5. 🏆 Competitive Programming Solutions - 300+ algorithmic problems solved across multiple platforms\n\nEach project demonstrates his blend of hardware expertise and software innovation!",
-  
-  experience: "💼 Farhan has served as Cultural Secretary of the EEE Association at Sylhet Engineering College (Aug 2024 – Jul 2025) and works as a Research Assistant in the Machine Learning Research Lab. He completed industrial training in Electrical Engineering & Instrumentation at TICI, Narsingdi with an A+ grade. He's also an active competitive programmer with strong problem-solving skills.",
-  
-  contact: "📧 You can reach Farhan at farhan.prottoy.17@gmail.com or call him at +8801751948747. He's based in Sylhet, Bangladesh. You can also connect with him on LinkedIn and GitHub. Feel free to explore his portfolio for more detailed information about his work and projects!",
-  
-  hire: "🚀 Ready to hire Farhan? Great choice! He's an Electrical & Electronic Engineering student with strong programming skills (Python, C++, JavaScript, React), experience in embedded systems (Arduino, ESP32), and machine learning expertise. He's completed industrial training with A+ grade and has proven project experience. Farhan is passionate, quick-learning, and ready to contribute to your team immediately!"
+  skills:
+    "💻 Farhan's Technical Skills:\n\n🔧 Programming: Python, C++, JavaScript, React\n⚡ Embedded Systems: Arduino, ESP32, IoT development\n🤖 Machine Learning: TensorFlow, PyTorch, Neural Networks\n🔬 Engineering Tools: MATLAB, Simulink, AutoCAD\n🌐 Web Development: HTML, CSS, React, Node.js\n🏆 Competitive Programming: 300+ problems solved\n📊 Data Analysis & Visualization\n\nHe combines theoretical knowledge with hands-on experience!",
+
+  education:
+    "🎓 Farhan is pursuing a Bachelor of Science in Electrical and Electronic Engineering (EEE) at Sylhet Engineering College (2020-2025) with a CGPA of 3.57/4.00. His thesis focuses on 'Detection and Classification of 2D Material Flakes Using Ensemble GMM and Neural Networks'. He has completed relevant coursework in microprocessors, digital signal processing, control systems, and power electronics.",
+
+  projects:
+    "🔥 Farhan's Featured Projects:\n\n1. 🔌 Three-Phase Inverter System - IGBT-based power electronics project with Arduino control\n\n2. 💡 Smart Light Switch - Automated lighting system with manual/automatic control modes\n\n3. 🧠 2D Material Flake Detection - Thesis project using Ensemble GMM and Neural Networks for advanced classification\n\n4. 🌦️ Weather Station - IoT-based environmental monitoring system\n\n5. 🏆 Competitive Programming Solutions - 300+ algorithmic problems solved across multiple platforms\n\nEach project demonstrates his blend of hardware expertise and software innovation!",
+
+  experience:
+    "💼 Farhan has served as Cultural Secretary of the EEE Association at Sylhet Engineering College (Aug 2024 – Jul 2025) and works as a Research Assistant in the Machine Learning Research Lab. He completed industrial training in Electrical Engineering & Instrumentation at TICI, Narsingdi with an A+ grade. He's also an active competitive programmer with strong problem-solving skills.",
+
+  contact:
+    "📧 You can reach Farhan at farhan.prottoy.17@gmail.com or call him at +8801751948747. He's based in Sylhet, Bangladesh. You can also connect with him on LinkedIn and GitHub. Feel free to explore his portfolio for more detailed information about his work and projects!",
+
+  hire: "🚀 Ready to hire Farhan? Great choice! He's an Electrical & Electronic Engineering student with strong programming skills (Python, C++, JavaScript, React), experience in embedded systems (Arduino, ESP32), and machine learning expertise. He's completed industrial training with A+ grade and has proven project experience. Farhan is passionate, quick-learning, and ready to contribute to your team immediately!",
 };

@@ -1,193 +1,202 @@
-import React, { useState, useRef } from 'react'
-import { motion } from 'framer-motion'
-import emailjs from 'emailjs-com'
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Send, 
+import React, { useState, useRef } from "react";
+import { motion } from "framer-motion";
+import emailjs from "emailjs-com";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
   CheckCircle,
   AlertCircle,
   User,
   MessageSquare,
   Github,
   Linkedin,
-  ExternalLink
-} from 'lucide-react'
+  ExternalLink,
+} from "lucide-react";
 
 const Contact = () => {
-  const formRef = useRef()
+  const formRef = useRef();
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  })
-  const [formStatus, setFormStatus] = useState({ type: '', message: '' })
-  const [isSubmitting, setIsSubmitting] = useState(false)
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [formStatus, setFormStatus] = useState({ type: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   const validateForm = () => {
     if (!formData.name.trim()) {
-      setFormStatus({ type: 'error', message: 'Please enter your name' })
-      return false
+      setFormStatus({ type: "error", message: "Please enter your name" });
+      return false;
     }
     if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) {
-      setFormStatus({ type: 'error', message: 'Please enter a valid email address' })
-      return false
+      setFormStatus({
+        type: "error",
+        message: "Please enter a valid email address",
+      });
+      return false;
     }
     if (!formData.subject.trim()) {
-      setFormStatus({ type: 'error', message: 'Please enter a subject' })
-      return false
+      setFormStatus({ type: "error", message: "Please enter a subject" });
+      return false;
     }
     if (!formData.message.trim()) {
-      setFormStatus({ type: 'error', message: 'Please enter your message' })
-      return false
+      setFormStatus({ type: "error", message: "Please enter your message" });
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    
-    if (!validateForm()) return
+    e.preventDefault();
 
-    setIsSubmitting(true)
-    setFormStatus({ type: '', message: '' })
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
+    setFormStatus({ type: "", message: "" });
 
     try {
       // EmailJS configuration - you'll need to replace these with your actual values
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'your_service_id'
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'your_template_id'
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'your_public_key'
+      const serviceId =
+        import.meta.env.VITE_EMAILJS_SERVICE_ID || "your_service_id";
+      const templateId =
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "your_template_id";
+      const publicKey =
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "your_public_key";
 
       const templateParams = {
         from_name: formData.name,
         from_email: formData.email,
         subject: formData.subject,
         message: formData.message,
-        to_name: 'Farhan Arefin Khan',
-        to_email: 'farhan.prottoy.17@gmail.com'
-      }
+        to_name: "Farhan Arefin Khan",
+        to_email: "farhan.prottoy.17@gmail.com",
+      };
 
       // Try EmailJS first
-      if (serviceId !== 'your_service_id') {
-        await emailjs.send(serviceId, templateId, templateParams, publicKey)
-        setFormStatus({ 
-          type: 'success', 
-          message: 'Message sent successfully! I\'ll get back to you soon.' 
-        })
+      if (serviceId !== "your_service_id") {
+        await emailjs.send(serviceId, templateId, templateParams, publicKey);
+        setFormStatus({
+          type: "success",
+          message: "Message sent successfully! I'll get back to you soon.",
+        });
       } else {
         // Fallback to Gmail mailto
-        const gmailSubject = encodeURIComponent(`Portfolio Contact: ${formData.subject}`)
+        const gmailSubject = encodeURIComponent(
+          `Portfolio Contact: ${formData.subject}`,
+        );
         const gmailBody = encodeURIComponent(
-          `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-        )
-        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=farhan.prottoy.17@gmail.com&subject=${gmailSubject}&body=${gmailBody}`
-        
-        window.open(gmailUrl, '_blank')
-        setFormStatus({ 
-          type: 'success', 
-          message: 'Redirecting to Gmail to send your message...' 
-        })
+          `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`,
+        );
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=farhan.prottoy.17@gmail.com&subject=${gmailSubject}&body=${gmailBody}`;
+
+        window.open(gmailUrl, "_blank");
+        setFormStatus({
+          type: "success",
+          message: "Redirecting to Gmail to send your message...",
+        });
       }
 
       // Reset form
       setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-      })
-
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
     } catch (error) {
-      console.error('Error sending message:', error)
-      
+      console.error("Error sending message:", error);
+
       // Fallback to Gmail
-      const gmailSubject = encodeURIComponent(`Portfolio Contact: ${formData.subject}`)
+      const gmailSubject = encodeURIComponent(
+        `Portfolio Contact: ${formData.subject}`,
+      );
       const gmailBody = encodeURIComponent(
-        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-      )
-      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=farhan.prottoy.17@gmail.com&subject=${gmailSubject}&body=${gmailBody}`
-      
-      window.open(gmailUrl, '_blank')
-      setFormStatus({ 
-        type: 'success', 
-        message: 'Redirecting to Gmail to send your message...' 
-      })
+        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`,
+      );
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=farhan.prottoy.17@gmail.com&subject=${gmailSubject}&body=${gmailBody}`;
+
+      window.open(gmailUrl, "_blank");
+      setFormStatus({
+        type: "success",
+        message: "Redirecting to Gmail to send your message...",
+      });
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const contactInfo = [
     {
       icon: Mail,
-      label: 'Email',
-      value: 'farhan.prottoy.17@gmail.com',
-      href: 'mailto:farhan.prottoy.17@gmail.com',
-      color: 'text-red-500',
-      description: 'Feel free to reach out for collaborations or opportunities'
+      label: "Email",
+      value: "farhan.prottoy.17@gmail.com",
+      href: "mailto:farhan.prottoy.17@gmail.com",
+      color: "text-red-500",
+      description: "Feel free to reach out for collaborations or opportunities",
     },
     {
       icon: Phone,
-      label: 'Phone',
-      value: '+880 1751-948747',
-      href: 'tel:+8801751948747',
-      color: 'text-green-500',
-      description: 'Available for calls between 9 AM - 9 PM (GMT+6)'
+      label: "Phone",
+      value: "+880 1751-948747",
+      href: "tel:+8801751948747",
+      color: "text-green-500",
+      description: "Available for calls between 9 AM - 9 PM (GMT+6)",
     },
     {
       icon: MapPin,
-      label: 'Location',
-      value: 'Sylhet District, Bangladesh',
-      href: 'https://maps.google.com/?q=Sylhet,Bangladesh',
-      color: 'text-blue-500',
-      description: 'Open to remote work and local opportunities'
-    }
-  ]
+      label: "Location",
+      value: "Sylhet District, Bangladesh",
+      href: "https://maps.google.com/?q=Sylhet,Bangladesh",
+      color: "text-blue-500",
+      description: "Open to remote work and local opportunities",
+    },
+  ];
 
   const socialLinks = [
     {
       icon: Github,
-      label: 'GitHub',
-      value: '@farhan-arefin-khan',
-      href: 'https://github.com/farhan-arefin-khan',
-      color: 'text-gray-800 dark:text-gray-200',
-      description: 'Check out my open source projects and contributions'
+      label: "GitHub",
+      value: "@Farhan-prottoy",
+      href: "https://github.com/Farhan-prottoy/",
+      color: "text-gray-800 dark:text-gray-200",
+      description: "Check out my open source projects and contributions",
     },
     {
       icon: Linkedin,
-      label: 'LinkedIn',
-      value: 'Farhan Arefin Khan',
-      href: 'https://www.linkedin.com/in/farhan-arefin-khan',
-      color: 'text-blue-600',
-      description: 'Connect with me professionally'
+      label: "LinkedIn",
+      value: "Farhan Arefin Khan",
+      href: "https://www.linkedin.com/in/farhan-arefin-khan",
+      color: "text-blue-600",
+      description: "Connect with me professionally",
     },
     {
       icon: ExternalLink,
-      label: 'Portfolio',
-      value: 'farhan-portfolio.dev',
-      href: '#',
-      color: 'text-purple-600',
-      description: 'Explore my complete portfolio website'
-    }
-  ]
+      label: "Portfolio",
+      value: "farhan-portfolio.dev",
+      href: "#",
+      color: "text-purple-600",
+      description: "Explore my complete portfolio website",
+    },
+  ];
 
   const quickInfo = {
-    availability: 'Available for freelance and full-time opportunities',
-    responseTime: 'Usually responds within 24 hours',
-    preferredContact: 'Email for detailed inquiries, phone for urgent matters',
-    timezone: 'GMT+6 (Bangladesh Standard Time)',
-    languages: 'Bangla, English, Hindi'
-  }
+    availability: "Available for freelance and full-time opportunities",
+    responseTime: "Usually responds within 24 hours",
+    preferredContact: "Email for detailed inquiries, phone for urgent matters",
+    timezone: "GMT+6 (Bangladesh Standard Time)",
+    languages: "Bangla, English, Hindi",
+  };
 
   return (
     <motion.div
@@ -209,8 +218,9 @@ const Contact = () => {
               Get In <span className="text-gradient">Touch</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Have a project in mind or want to collaborate? I'd love to hear from you. 
-              Let's discuss how we can work together to bring your ideas to life.
+              Have a project in mind or want to collaborate? I'd love to hear
+              from you. Let's discuss how we can work together to bring your
+              ideas to life.
             </p>
           </motion.div>
         </div>
@@ -230,23 +240,30 @@ const Contact = () => {
               <h2 className="text-3xl font-display font-bold text-gray-900 dark:text-white mb-8">
                 Let's Start a Conversation
               </h2>
-              
+
               <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-                I'm always interested in new opportunities, interesting projects, 
-                and meaningful collaborations. Whether you have a question about my work, 
-                want to discuss a project, or just want to say hi, feel free to reach out!
+                I'm always interested in new opportunities, interesting
+                projects, and meaningful collaborations. Whether you have a
+                question about my work, want to discuss a project, or just want
+                to say hi, feel free to reach out!
               </p>
 
               {/* Contact Info Cards */}
               <div className="space-y-6 mb-8">
                 {contactInfo.map((info, index) => {
-                  const Icon = info.icon
+                  const Icon = info.icon;
                   return (
                     <motion.a
                       key={info.label}
                       href={info.href}
-                      target={info.href.startsWith('http') ? '_blank' : undefined}
-                      rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      target={
+                        info.href.startsWith("http") ? "_blank" : undefined
+                      }
+                      rel={
+                        info.href.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: false, amount: 0.3 }}
@@ -254,7 +271,9 @@ const Contact = () => {
                       whileHover={{ scale: 1.02 }}
                       className="flex items-center space-x-4 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
                     >
-                      <div className={`w-12 h-12 ${info.color} bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                      <div
+                        className={`w-12 h-12 ${info.color} bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
+                      >
                         <Icon size={24} />
                       </div>
                       <div>
@@ -265,9 +284,12 @@ const Contact = () => {
                           {info.value}
                         </p>
                       </div>
-                      <ExternalLink size={16} className="text-gray-400 group-hover:text-primary-600 transition-colors ml-auto" />
+                      <ExternalLink
+                        size={16}
+                        className="text-gray-400 group-hover:text-primary-600 transition-colors ml-auto"
+                      />
                     </motion.a>
-                  )
+                  );
                 })}
               </div>
 
@@ -278,7 +300,7 @@ const Contact = () => {
                 </h3>
                 <div className="flex space-x-4">
                   {socialLinks.map((social) => {
-                    const Icon = social.icon
+                    const Icon = social.icon;
                     return (
                       <motion.a
                         key={social.name}
@@ -292,7 +314,7 @@ const Contact = () => {
                       >
                         <Icon size={24} />
                       </motion.a>
-                    )
+                    );
                   })}
                 </div>
               </div>
@@ -309,15 +331,21 @@ const Contact = () => {
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                 Send Me a Message
               </h3>
-              
+
               <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       Name *
                     </label>
                     <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                      <User
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                        size={18}
+                      />
                       <input
                         type="text"
                         id="name"
@@ -332,11 +360,17 @@ const Contact = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       Email *
                     </label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                      <Mail
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                        size={18}
+                      />
                       <input
                         type="email"
                         id="email"
@@ -352,7 +386,10 @@ const Contact = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    htmlFor="subject"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Subject *
                   </label>
                   <input
@@ -368,11 +405,17 @@ const Contact = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Message *
                   </label>
                   <div className="relative">
-                    <MessageSquare className="absolute left-3 top-3 text-gray-400" size={18} />
+                    <MessageSquare
+                      className="absolute left-3 top-3 text-gray-400"
+                      size={18}
+                    />
                     <textarea
                       id="message"
                       name="message"
@@ -392,12 +435,12 @@ const Contact = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className={`flex items-center space-x-2 p-4 rounded-lg ${
-                      formStatus.type === 'success' 
-                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' 
-                        : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                      formStatus.type === "success"
+                        ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                        : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
                     }`}
                   >
-                    {formStatus.type === 'success' ? (
+                    {formStatus.type === "success" ? (
                       <CheckCircle size={20} />
                     ) : (
                       <AlertCircle size={20} />
@@ -418,7 +461,10 @@ const Contact = () => {
                     </>
                   ) : (
                     <>
-                      <Send size={18} className="group-hover:translate-x-1 transition-transform" />
+                      <Send
+                        size={18}
+                        className="group-hover:translate-x-1 transition-transform"
+                      />
                       <span>Send Message</span>
                     </>
                   )}
@@ -448,7 +494,7 @@ const Contact = () => {
               Ready to Start Something Amazing?
             </h2>
             <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-              Let's turn your ideas into reality. Whether it's a new project, 
+              Let's turn your ideas into reality. Whether it's a new project,
               collaboration, or just a chat about technology, I'm here to help.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -458,7 +504,10 @@ const Contact = () => {
               >
                 <Mail size={20} className="mr-2" />
                 Send Email
-                <ExternalLink size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                <ExternalLink
+                  size={16}
+                  className="ml-2 group-hover:translate-x-1 transition-transform"
+                />
               </a>
               <a
                 href="tel:01751948747"
@@ -466,14 +515,17 @@ const Contact = () => {
               >
                 <Phone size={20} className="mr-2" />
                 Call Now
-                <ExternalLink size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                <ExternalLink
+                  size={16}
+                  className="ml-2 group-hover:translate-x-1 transition-transform"
+                />
               </a>
             </div>
           </motion.div>
         </div>
       </section>
     </motion.div>
-  )
-}
+  );
+};
 
-export default Contact
+export default Contact;
