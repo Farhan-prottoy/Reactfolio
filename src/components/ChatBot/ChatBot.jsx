@@ -20,6 +20,7 @@ const ChatBot = () => {
   const [inputMessage, setInputMessage] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef(null)
+  const inputRef = useRef(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -28,6 +29,16 @@ const ChatBot = () => {
   useEffect(() => {
     scrollToBottom()
   }, [messages, isTyping])
+
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        inputRef.current?.focus({ preventScroll: true })
+      }, 120)
+
+      return () => clearTimeout(timer)
+    }
+  }, [isOpen])
 
   const sendToAPI = async (message) => {
     try {
@@ -219,6 +230,7 @@ const ChatBot = () => {
             <div className="p-4 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
               <div className="flex gap-2">
                 <input
+                  ref={inputRef}
                   type="text"
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
