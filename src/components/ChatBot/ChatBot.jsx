@@ -1,120 +1,138 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { MessageCircle, X, Send, Bot, User, Sparkles } from 'lucide-react'
-import { QUICK_RESPONSES } from '../../data/farhanInfo.js'
-// ReactMarkdown import removed to prevent build error as package is not installed 
+import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { MessageCircle, X, Send, Bot, User, Sparkles } from "lucide-react";
+import { QUICK_RESPONSES } from "../../data/farhanInfo.js";
+// ReactMarkdown import removed to prevent build error as package is not installed
 // If react-markdown isn't installed, we'll stick to text, but the plan implies "modern".
-// I'll stick to text rendering to avoid dependency errors unless I install it. 
+// I'll stick to text rendering to avoid dependency errors unless I install it.
 // I'll use simple text for now but style it nicely.
 
 const ChatBot = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       id: 1,
       text: "Hello! I'm Farhan's virtual assistant. Ask me anything about his projects, skills, or experience!",
-      sender: 'bot',
-      timestamp: new Date()
-    }
-  ])
-  const [inputMessage, setInputMessage] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
-  const messagesEndRef = useRef(null)
-  const inputRef = useRef(null)
+      sender: "bot",
+      timestamp: new Date(),
+    },
+  ]);
+  const [inputMessage, setInputMessage] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages, isTyping])
+    scrollToBottom();
+  }, [messages, isTyping]);
 
   useEffect(() => {
     if (isOpen) {
       const timer = setTimeout(() => {
-        inputRef.current?.focus({ preventScroll: true })
-      }, 120)
+        inputRef.current?.focus({ preventScroll: true });
+      }, 120);
 
-      return () => clearTimeout(timer)
+      return () => clearTimeout(timer);
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   const sendToAPI = async (message) => {
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: message.trim() }),
       });
-      
-      if (!response.ok) throw new Error('API Error');
-      
+
+      if (!response.ok) throw new Error("API Error");
+
       const data = await response.json();
       return data.response;
     } catch (error) {
       console.error(error);
       return "I'm having trouble connecting right now. Please try again later.";
     }
-  }
+  };
 
   const handleSendMessage = async () => {
-    if (!inputMessage.trim()) return
+    if (!inputMessage.trim()) return;
 
     const userMsg = {
       id: Date.now(),
       text: inputMessage,
-      sender: 'user',
-      timestamp: new Date()
-    }
+      sender: "user",
+      timestamp: new Date(),
+    };
 
-    setMessages(prev => [...prev, userMsg])
-    setInputMessage('')
-    setIsTyping(true)
+    setMessages((prev) => [...prev, userMsg]);
+    setInputMessage("");
+    setIsTyping(true);
 
-    const responseText = await sendToAPI(userMsg.text)
+    const responseText = await sendToAPI(userMsg.text);
 
-    setIsTyping(false)
-    setMessages(prev => [...prev, {
-      id: Date.now() + 1,
-      text: responseText,
-      sender: 'bot',
-      timestamp: new Date()
-    }])
-  }
+    setIsTyping(false);
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now() + 1,
+        text: responseText,
+        sender: "bot",
+        timestamp: new Date(),
+      },
+    ]);
+  };
 
   const handleQuickAction = (actionKey) => {
     let text = "";
-    switch(actionKey) {
-        case 'skills': text = "What are your technical skills?"; break;
-        case 'projects': text = "Tell me about your projects."; break;
-        case 'hire': text = "Why should I hire you?"; break;
-        default: return;
+    switch (actionKey) {
+      case "skills":
+        text = "What are your technical skills?";
+        break;
+      case "projects":
+        text = "Tell me about your projects.";
+        break;
+      case "hire":
+        text = "Why should I hire you?";
+        break;
+      default:
+        return;
     }
-    
+
     // Simulate user typing for quick action
-    const userMsg = { id: Date.now(), text, sender: 'user', timestamp: new Date() };
-    setMessages(prev => [...prev, userMsg]);
+    const userMsg = {
+      id: Date.now(),
+      text,
+      sender: "user",
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, userMsg]);
     setIsTyping(true);
-    
+
     // Call API
-    sendToAPI(text).then(response => {
-        setIsTyping(false);
-        setMessages(prev => [...prev, {
+    sendToAPI(text).then((response) => {
+      setIsTyping(false);
+      setMessages((prev) => [
+        ...prev,
+        {
           id: Date.now() + 1,
           text: response,
-          sender: 'bot',
-          timestamp: new Date()
-        }]);
+          sender: "bot",
+          timestamp: new Date(),
+        },
+      ]);
     });
-  }
+  };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleSendMessage()
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
     }
-  }
+  };
 
   return (
     <>
@@ -126,7 +144,7 @@ const ChatBot = () => {
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(true)}
         className={`fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-r from-primary-600 to-electric-600 text-white rounded-full shadow-2xl hover:shadow-electric-500/50 transition-all duration-300 flex items-center justify-center ${
-          isOpen ? 'hidden' : 'flex'
+          isOpen ? "hidden" : "flex"
         }`}
       >
         <MessageCircle size={28} />
@@ -157,7 +175,7 @@ const ChatBot = () => {
                   </div>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => setIsOpen(false)}
                 className="hover:bg-white/20 p-2 rounded-full transition-colors"
               >
@@ -172,36 +190,50 @@ const ChatBot = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   key={msg.id}
-                  className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                  className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
                 >
-                    <div className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed ${
-                      msg.sender === 'user' 
-                        ? 'bg-primary-600 text-white rounded-tr-sm' 
-                        : 'bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-tl-sm shadow-sm'
-                    }`}>
-                      {/* Markdown-ish formatting for simple lists/bold if needed (rendered as text for now) */}
-                      <span className="whitespace-pre-wrap">{msg.text}</span>
-                    </div>
+                  <div
+                    className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed ${
+                      msg.sender === "user"
+                        ? "bg-primary-600 text-white rounded-tr-sm"
+                        : "bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-tl-sm shadow-sm"
+                    }`}
+                  >
+                    {/* Markdown-ish formatting for simple lists/bold if needed (rendered as text for now) */}
+                    <span className="whitespace-pre-wrap">{msg.text}</span>
+                  </div>
                 </motion.div>
               ))}
-              
+
               {isTyping && (
                 <div className="flex justify-start">
                   <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-3 rounded-2xl rounded-tl-sm shadow-sm">
                     <div className="flex gap-1">
-                      <motion.div 
-                        animate={{ y: [0, -5, 0] }} 
-                        transition={{ repeat: Infinity, duration: 0.6, delay: 0 }}
+                      <motion.div
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{
+                          repeat: Infinity,
+                          duration: 0.6,
+                          delay: 0,
+                        }}
                         className="w-2 h-2 bg-gray-400 rounded-full"
                       />
-                      <motion.div 
-                        animate={{ y: [0, -5, 0] }} 
-                        transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }}
+                      <motion.div
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{
+                          repeat: Infinity,
+                          duration: 0.6,
+                          delay: 0.2,
+                        }}
                         className="w-2 h-2 bg-gray-400 rounded-full"
                       />
-                      <motion.div 
-                        animate={{ y: [0, -5, 0] }} 
-                        transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }}
+                      <motion.div
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{
+                          repeat: Infinity,
+                          duration: 0.6,
+                          delay: 0.4,
+                        }}
                         className="w-2 h-2 bg-gray-400 rounded-full"
                       />
                     </div>
@@ -213,17 +245,26 @@ const ChatBot = () => {
 
             {/* Quick Actions (only if empty or few messages) */}
             {messages.length < 3 && (
-                <div className="px-4 py-2 flex gap-2 overflow-x-auto no-scrollbar">
-                    <button onClick={() => handleQuickAction('skills')} className="text-xs bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-full whitespace-nowrap border border-gray-200 dark:border-gray-600 transition-colors">
-                        🛠️ Skills
-                    </button>
-                    <button onClick={() => handleQuickAction('projects')} className="text-xs bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-full whitespace-nowrap border border-gray-200 dark:border-gray-600 transition-colors">
-                        🚀 Projects
-                    </button>
-                    <button onClick={() => handleQuickAction('hire')} className="text-xs bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-full whitespace-nowrap border border-gray-200 dark:border-gray-600 transition-colors">
-                        💼 Hire Me
-                    </button>
-                </div>
+              <div className="px-4 py-2 flex gap-2 overflow-x-auto no-scrollbar">
+                <button
+                  onClick={() => handleQuickAction("skills")}
+                  className="text-xs bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-full whitespace-nowrap border border-gray-200 dark:border-gray-600 transition-colors"
+                >
+                  🛠️ Skills
+                </button>
+                <button
+                  onClick={() => handleQuickAction("projects")}
+                  className="text-xs bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-full whitespace-nowrap border border-gray-200 dark:border-gray-600 transition-colors"
+                >
+                  🚀 Projects
+                </button>
+                <button
+                  onClick={() => handleQuickAction("hire")}
+                  className="text-xs bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-full whitespace-nowrap border border-gray-200 dark:border-gray-600 transition-colors"
+                >
+                  💼 Hire Me
+                </button>
+              </div>
             )}
 
             {/* Input Area */}
@@ -249,12 +290,11 @@ const ChatBot = () => {
                 </motion.button>
               </div>
             </div>
-            
           </motion.div>
         )}
       </AnimatePresence>
     </>
-  )
-}
+  );
+};
 
-export default ChatBot
+export default ChatBot;
